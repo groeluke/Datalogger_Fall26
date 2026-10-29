@@ -37,21 +37,28 @@
             LogPathStatusLabel = new ToolStripStatusLabel();
             SampleRateStatusLabel = new ToolStripStatusLabel();
             ComPortsStatusLabel = new ToolStripStatusLabel();
-            MainMenuStrip = new MenuStrip();
-            MainTimer = new System.Windows.Forms.Timer(components);
+            TopMenuStrip = new MenuStrip();
             fileToolStripMenuItem = new ToolStripMenuItem();
+            MainTimer = new System.Windows.Forms.Timer(components);
             contextMenuStrip1 = new ContextMenuStrip(components);
             contextMenuStrip2 = new ContextMenuStrip(components);
+            settingsToolStripMenuItem = new ToolStripMenuItem();
+            GraphPictureBox = new PictureBox();
+            comboBox1 = new ComboBox();
+            radioButton1 = new RadioButton();
+            radioButton2 = new RadioButton();
+            comboBox2 = new ComboBox();
             MainStatusStrip.SuspendLayout();
-            MainMenuStrip.SuspendLayout();
+            TopMenuStrip.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)GraphPictureBox).BeginInit();
             SuspendLayout();
             // 
             // ComListBox
             // 
             ComListBox.FormattingEnabled = true;
-            ComListBox.Location = new Point(168, 36);
+            ComListBox.Location = new Point(399, 36);
             ComListBox.Name = "ComListBox";
-            ComListBox.Size = new Size(620, 254);
+            ComListBox.Size = new Size(389, 254);
             ComListBox.TabIndex = 0;
             // 
             // SaveButton
@@ -62,6 +69,7 @@
             SaveButton.TabIndex = 1;
             SaveButton.Text = "&Save";
             SaveButton.UseVisualStyleBackColor = true;
+            SaveButton.Click += SaveButton_Click;
             // 
             // StopButton
             // 
@@ -71,6 +79,7 @@
             StopButton.TabIndex = 2;
             StopButton.Text = "S&top";
             StopButton.UseVisualStyleBackColor = true;
+            StopButton.Click += StopButton_Click;
             // 
             // StartButton
             // 
@@ -80,6 +89,7 @@
             StartButton.TabIndex = 3;
             StartButton.Text = "St&art";
             StartButton.UseVisualStyleBackColor = true;
+            StartButton.Click += StartButton_Click;
             // 
             // MainStatusStrip
             // 
@@ -109,40 +119,111 @@
             ComPortsStatusLabel.Size = new Size(179, 25);
             ComPortsStatusLabel.Text = "toolStripStatusLabel1";
             // 
-            // MainMenuStrip
+            // TopMenuStrip
             // 
-            MainMenuStrip.ImageScalingSize = new Size(24, 24);
-            MainMenuStrip.Items.AddRange(new ToolStripItem[] { fileToolStripMenuItem });
-            MainMenuStrip.Location = new Point(0, 0);
-            MainMenuStrip.Name = "MainMenuStrip";
-            MainMenuStrip.Size = new Size(800, 33);
-            MainMenuStrip.TabIndex = 5;
-            MainMenuStrip.Text = "menuStrip1";
+            TopMenuStrip.ImageScalingSize = new Size(24, 24);
+            TopMenuStrip.Items.AddRange(new ToolStripItem[] { fileToolStripMenuItem });
+            TopMenuStrip.Location = new Point(0, 0);
+            TopMenuStrip.Name = "TopMenuStrip";
+            TopMenuStrip.Size = new Size(800, 33);
+            TopMenuStrip.TabIndex = 5;
+            TopMenuStrip.Text = "menuStrip1";
             // 
             // fileToolStripMenuItem
             // 
+            fileToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { settingsToolStripMenuItem });
             fileToolStripMenuItem.Name = "fileToolStripMenuItem";
             fileToolStripMenuItem.Size = new Size(54, 29);
             fileToolStripMenuItem.Text = "File";
+            // 
+            // contextMenuStrip1
+            // 
+            contextMenuStrip1.ImageScalingSize = new Size(24, 24);
+            contextMenuStrip1.Name = "contextMenuStrip1";
+            contextMenuStrip1.Size = new Size(61, 4);
+            // 
+            // contextMenuStrip2
+            // 
+            contextMenuStrip2.ImageScalingSize = new Size(24, 24);
+            contextMenuStrip2.Name = "contextMenuStrip2";
+            contextMenuStrip2.Size = new Size(61, 4);
+            // 
+            // settingsToolStripMenuItem
+            // 
+            settingsToolStripMenuItem.Name = "settingsToolStripMenuItem";
+            settingsToolStripMenuItem.Size = new Size(270, 34);
+            settingsToolStripMenuItem.Text = "Settings";
+            settingsToolStripMenuItem.Click += settingsToolStripMenuItem_Click;
+            // 
+            // GraphPictureBox
+            // 
+            GraphPictureBox.Location = new Point(12, 36);
+            GraphPictureBox.Name = "GraphPictureBox";
+            GraphPictureBox.Size = new Size(381, 254);
+            GraphPictureBox.TabIndex = 6;
+            GraphPictureBox.TabStop = false;
+            // 
+            // comboBox1
+            // 
+            comboBox1.FormattingEnabled = true;
+            comboBox1.Location = new Point(12, 296);
+            comboBox1.Name = "comboBox1";
+            comboBox1.Size = new Size(381, 33);
+            comboBox1.TabIndex = 7;
+            // 
+            // radioButton1
+            // 
+            radioButton1.AutoSize = true;
+            radioButton1.Location = new Point(22, 375);
+            radioButton1.Name = "radioButton1";
+            radioButton1.Size = new Size(141, 29);
+            radioButton1.TabIndex = 8;
+            radioButton1.TabStop = true;
+            radioButton1.Text = "radioButton1";
+            radioButton1.UseVisualStyleBackColor = true;
+            // 
+            // radioButton2
+            // 
+            radioButton2.AutoSize = true;
+            radioButton2.Location = new Point(169, 375);
+            radioButton2.Name = "radioButton2";
+            radioButton2.Size = new Size(141, 29);
+            radioButton2.TabIndex = 9;
+            radioButton2.TabStop = true;
+            radioButton2.Text = "radioButton2";
+            radioButton2.UseVisualStyleBackColor = true;
+            // 
+            // comboBox2
+            // 
+            comboBox2.FormattingEnabled = true;
+            comboBox2.Location = new Point(399, 296);
+            comboBox2.Name = "comboBox2";
+            comboBox2.Size = new Size(389, 33);
+            comboBox2.TabIndex = 10;
             // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(10F, 25F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(800, 450);
+            Controls.Add(comboBox2);
+            Controls.Add(radioButton2);
+            Controls.Add(radioButton1);
+            Controls.Add(comboBox1);
+            Controls.Add(GraphPictureBox);
             Controls.Add(MainStatusStrip);
-            Controls.Add(MainMenuStrip);
+            Controls.Add(TopMenuStrip);
             Controls.Add(StartButton);
             Controls.Add(StopButton);
             Controls.Add(SaveButton);
             Controls.Add(ComListBox);
-            MainMenuStrip = MainMenuStrip;
             Name = "Form1";
             Text = "Form1";
             MainStatusStrip.ResumeLayout(false);
             MainStatusStrip.PerformLayout();
-            MainMenuStrip.ResumeLayout(false);
-            MainMenuStrip.PerformLayout();
+            TopMenuStrip.ResumeLayout(false);
+            TopMenuStrip.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)GraphPictureBox).EndInit();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -157,10 +238,16 @@
         private ToolStripStatusLabel LogPathStatusLabel;
         private ToolStripStatusLabel SampleRateStatusLabel;
         private ToolStripStatusLabel ComPortsStatusLabel;
-        private MenuStrip MainMenuStrip;
+        private MenuStrip TopMenuStrip;
         private ToolStripMenuItem fileToolStripMenuItem;
         private System.Windows.Forms.Timer MainTimer;
         private ContextMenuStrip contextMenuStrip1;
         private ContextMenuStrip contextMenuStrip2;
+        private ToolStripMenuItem settingsToolStripMenuItem;
+        private PictureBox GraphPictureBox;
+        private ComboBox comboBox1;
+        private RadioButton radioButton1;
+        private RadioButton radioButton2;
+        private ComboBox comboBox2;
     }
 }
