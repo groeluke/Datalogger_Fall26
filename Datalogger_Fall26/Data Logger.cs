@@ -1,4 +1,14 @@
 using System.IO.Ports;
+using
+using 
+using 
+/*Luke Groesbeck
+*Fall 2026
+*RCET 3371
+*DartGame
+*Advanced Programming Techniques & GUI Development
+*https://github.com/groeluke/Datalogger_Fall26.git
+*/
 namespace Datalogger_Fall26
 {
     public partial class Form1 : Form
@@ -8,7 +18,7 @@ namespace Datalogger_Fall26
             InitializeComponent();
         }
 
-        private void settingsToolStripMenuItem_Click(object sender, EventArgs e)
+        private void SettingsMenuItem_Click(object sender, EventArgs e)
         {
 
         }
@@ -28,7 +38,32 @@ namespace Datalogger_Fall26
 
         }
 
-        private void fileToolStripMenuItem_Click(object sender, EventArgs e)
+        private void SampleRateComboBox_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void ExitMenuItem_Click(object sender, EventArgs e)
+        {
+            this.Close;
+        }
+
+        private void StartContextMenuItem_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void StopContextMenuItem_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void SaveContextMenuItem_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void HistoryComboBox_SelectedIndexChanged(object sender, EventArgs e)
         {
 
         }

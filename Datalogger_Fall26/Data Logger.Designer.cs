@@ -38,34 +38,38 @@
             SampleRateStatusLabel = new ToolStripStatusLabel();
             ComPortsStatusLabel = new ToolStripStatusLabel();
             TopMenuStrip = new MenuStrip();
-            fileToolStripMenuItem = new ToolStripMenuItem();
+            FileMenuItem = new ToolStripMenuItem();
             SettingsMenuItem = new ToolStripMenuItem();
+            ExitMenuItem = new ToolStripMenuItem();
             MainTimer = new System.Windows.Forms.Timer(components);
-            ContextMenuStrip = new ContextMenuStrip(components);
+            GraphContextMenuStrip = new ContextMenuStrip(components);
+            StartContextMenuItem = new ToolStripMenuItem();
+            StopContextMenuItem = new ToolStripMenuItem();
+            SaveContextMenuItem = new ToolStripMenuItem();
             GraphPictureBox = new PictureBox();
             SampleRateComboBox = new ComboBox();
-            MinuteRadioButton = new RadioButton();
-            SecondRadioButton = new RadioButton();
             PortsComboBox = new ComboBox();
-            ToolTip = new ToolTip(components);
+            MainToolTip = new ToolTip(components);
             ButtonGroupBox = new GroupBox();
-            RadioButtonGroupBox = new GroupBox();
-            MillisecondRadioButton = new RadioButton();
+            HistoryComboBox = new ComboBox();
+            SelectPortLabel = new Label();
+            SampleRateLabel = new Label();
+            HistorySelectLabel = new Label();
             MainStatusStrip.SuspendLayout();
             TopMenuStrip.SuspendLayout();
+            GraphContextMenuStrip.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)GraphPictureBox).BeginInit();
             ButtonGroupBox.SuspendLayout();
-            RadioButtonGroupBox.SuspendLayout();
             SuspendLayout();
             // 
             // ComListBox
             // 
             ComListBox.FormattingEnabled = true;
-            ComListBox.Location = new Point(399, 36);
+            ComListBox.Location = new Point(6, 36);
             ComListBox.Name = "ComListBox";
-            ComListBox.Size = new Size(389, 229);
-            ComListBox.TabIndex = 0;
-            ToolTip.SetToolTip(ComListBox, "Display the collected Data.");
+            ComListBox.Size = new Size(344, 254);
+            ComListBox.TabIndex = 4;
+            MainToolTip.SetToolTip(ComListBox, "Display the collected Data.");
             // 
             // SaveButton
             // 
@@ -74,7 +78,7 @@
             SaveButton.Size = new Size(140, 62);
             SaveButton.TabIndex = 2;
             SaveButton.Text = "&Save";
-            ToolTip.SetToolTip(SaveButton, "Save the Data collected.");
+            MainToolTip.SetToolTip(SaveButton, "Save the Data collected.");
             SaveButton.UseVisualStyleBackColor = true;
             SaveButton.Click += SaveButton_Click;
             // 
@@ -85,7 +89,7 @@
             StopButton.Size = new Size(140, 62);
             StopButton.TabIndex = 1;
             StopButton.Text = "S&top";
-            ToolTip.SetToolTip(StopButton, "Stop Data logging.");
+            MainToolTip.SetToolTip(StopButton, "Stop Data logging.");
             StopButton.UseVisualStyleBackColor = true;
             StopButton.Click += StopButton_Click;
             // 
@@ -96,7 +100,7 @@
             StartButton.Size = new Size(140, 62);
             StartButton.TabIndex = 0;
             StartButton.Text = "St&art";
-            ToolTip.SetToolTip(StartButton, "Start Data logging.");
+            MainToolTip.SetToolTip(StartButton, "Start Data logging.");
             StartButton.UseVisualStyleBackColor = true;
             StartButton.Click += StartButton_Click;
             // 
@@ -113,102 +117,109 @@
             // LogPathStatusLabel
             // 
             LogPathStatusLabel.Name = "LogPathStatusLabel";
-            LogPathStatusLabel.Size = new Size(179, 25);
-            LogPathStatusLabel.Text = "toolStripStatusLabel1";
+            LogPathStatusLabel.Size = new Size(94, 25);
+            LogPathStatusLabel.Text = "Log: None";
             // 
             // SampleRateStatusLabel
             // 
             SampleRateStatusLabel.Name = "SampleRateStatusLabel";
-            SampleRateStatusLabel.Size = new Size(179, 25);
-            SampleRateStatusLabel.Text = "toolStripStatusLabel1";
+            SampleRateStatusLabel.Size = new Size(77, 25);
+            SampleRateStatusLabel.Text = "Rate: ---";
             // 
             // ComPortsStatusLabel
             // 
             ComPortsStatusLabel.Name = "ComPortsStatusLabel";
-            ComPortsStatusLabel.Size = new Size(179, 25);
-            ComPortsStatusLabel.Text = "toolStripStatusLabel1";
+            ComPortsStatusLabel.Size = new Size(176, 25);
+            ComPortsStatusLabel.Text = "COM: not connected";
             // 
             // TopMenuStrip
             // 
             TopMenuStrip.ImageScalingSize = new Size(24, 24);
-            TopMenuStrip.Items.AddRange(new ToolStripItem[] { fileToolStripMenuItem });
+            TopMenuStrip.Items.AddRange(new ToolStripItem[] { FileMenuItem });
             TopMenuStrip.Location = new Point(0, 0);
             TopMenuStrip.Name = "TopMenuStrip";
             TopMenuStrip.Size = new Size(800, 33);
             TopMenuStrip.TabIndex = 5;
             TopMenuStrip.Text = "menuStrip1";
             // 
-            // fileToolStripMenuItem
+            // FileMenuItem
             // 
-            fileToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { SettingsMenuItem });
-            fileToolStripMenuItem.Name = "fileToolStripMenuItem";
-            fileToolStripMenuItem.Size = new Size(54, 29);
-            fileToolStripMenuItem.Text = "File";
-            fileToolStripMenuItem.Click += fileToolStripMenuItem_Click;
+            FileMenuItem.DropDownItems.AddRange(new ToolStripItem[] { SettingsMenuItem, ExitMenuItem });
+            FileMenuItem.Name = "FileMenuItem";
+            FileMenuItem.Size = new Size(54, 29);
+            FileMenuItem.Text = "File";
             // 
             // SettingsMenuItem
             // 
             SettingsMenuItem.Name = "SettingsMenuItem";
-            SettingsMenuItem.Size = new Size(178, 34);
+            SettingsMenuItem.Size = new Size(270, 34);
             SettingsMenuItem.Text = "Settings";
-            SettingsMenuItem.Click += settingsToolStripMenuItem_Click;
+            SettingsMenuItem.Click += SettingsMenuItem_Click;
             // 
-            // ContextMenuStrip
+            // ExitMenuItem
             // 
-            ContextMenuStrip.ImageScalingSize = new Size(24, 24);
-            ContextMenuStrip.Name = "contextMenuStrip1";
-            ContextMenuStrip.Size = new Size(61, 4);
+            ExitMenuItem.Name = "ExitMenuItem";
+            ExitMenuItem.Size = new Size(270, 34);
+            ExitMenuItem.Text = "Exit";
+            ExitMenuItem.Click += ExitMenuItem_Click;
+            // 
+            // GraphContextMenuStrip
+            // 
+            GraphContextMenuStrip.ImageScalingSize = new Size(24, 24);
+            GraphContextMenuStrip.Items.AddRange(new ToolStripItem[] { StartContextMenuItem, StopContextMenuItem, SaveContextMenuItem });
+            GraphContextMenuStrip.Name = "contextMenuStrip1";
+            GraphContextMenuStrip.Size = new Size(122, 100);
+            // 
+            // StartContextMenuItem
+            // 
+            StartContextMenuItem.Name = "StartContextMenuItem";
+            StartContextMenuItem.Size = new Size(240, 32);
+            StartContextMenuItem.Text = "Start";
+            StartContextMenuItem.Click += StartContextMenuItem_Click;
+            // 
+            // StopContextMenuItem
+            // 
+            StopContextMenuItem.Name = "StopContextMenuItem";
+            StopContextMenuItem.Size = new Size(240, 32);
+            StopContextMenuItem.Text = "Stop";
+            StopContextMenuItem.Click += StopContextMenuItem_Click;
+            // 
+            // SaveContextMenuItem
+            // 
+            SaveContextMenuItem.Name = "SaveContextMenuItem";
+            SaveContextMenuItem.Size = new Size(240, 32);
+            SaveContextMenuItem.Text = "Save";
+            SaveContextMenuItem.Click += SaveContextMenuItem_Click;
             // 
             // GraphPictureBox
             // 
-            GraphPictureBox.Location = new Point(12, 36);
+            GraphPictureBox.Location = new Point(362, 36);
             GraphPictureBox.Name = "GraphPictureBox";
-            GraphPictureBox.Size = new Size(381, 229);
+            GraphPictureBox.Size = new Size(432, 268);
             GraphPictureBox.TabIndex = 6;
             GraphPictureBox.TabStop = false;
-            ToolTip.SetToolTip(GraphPictureBox, "Display the graph of collected Data.");
+            MainToolTip.SetToolTip(GraphPictureBox, "Display the graph of collected Data.");
             // 
             // SampleRateComboBox
             // 
+            SampleRateComboBox.DropDownStyle = ComboBoxStyle.DropDownList;
             SampleRateComboBox.FormattingEnabled = true;
-            SampleRateComboBox.Location = new Point(12, 271);
+            SampleRateComboBox.Location = new Point(6, 335);
             SampleRateComboBox.Name = "SampleRateComboBox";
-            SampleRateComboBox.Size = new Size(381, 33);
-            SampleRateComboBox.TabIndex = 7;
-            ToolTip.SetToolTip(SampleRateComboBox, "Sample Rate ");
-            // 
-            // MinuteRadioButton
-            // 
-            MinuteRadioButton.AutoSize = true;
-            MinuteRadioButton.Location = new Point(6, 30);
-            MinuteRadioButton.Name = "MinuteRadioButton";
-            MinuteRadioButton.Size = new Size(112, 29);
-            MinuteRadioButton.TabIndex = 0;
-            MinuteRadioButton.TabStop = true;
-            MinuteRadioButton.Text = "1 Minute ";
-            ToolTip.SetToolTip(MinuteRadioButton, "1 Minute intervals for collecting.");
-            MinuteRadioButton.UseVisualStyleBackColor = true;
-            // 
-            // SecondRadioButton
-            // 
-            SecondRadioButton.AutoSize = true;
-            SecondRadioButton.Location = new Point(153, 30);
-            SecondRadioButton.Name = "SecondRadioButton";
-            SecondRadioButton.Size = new Size(111, 29);
-            SecondRadioButton.TabIndex = 1;
-            SecondRadioButton.TabStop = true;
-            SecondRadioButton.Text = "1 Second";
-            ToolTip.SetToolTip(SecondRadioButton, "1 Second intervals for collecting.");
-            SecondRadioButton.UseVisualStyleBackColor = true;
+            SampleRateComboBox.Size = new Size(170, 33);
+            SampleRateComboBox.TabIndex = 1;
+            MainToolTip.SetToolTip(SampleRateComboBox, "Sample Rate to select on how much Data is collected.");
+            SampleRateComboBox.SelectedIndexChanged += SampleRateComboBox_SelectedIndexChanged;
             // 
             // PortsComboBox
             // 
+            PortsComboBox.DropDownStyle = ComboBoxStyle.DropDownList;
             PortsComboBox.FormattingEnabled = true;
-            PortsComboBox.Location = new Point(399, 271);
+            PortsComboBox.Location = new Point(7, 296);
             PortsComboBox.Name = "PortsComboBox";
-            PortsComboBox.Size = new Size(389, 33);
+            PortsComboBox.Size = new Size(169, 33);
             PortsComboBox.TabIndex = 0;
-            ToolTip.SetToolTip(PortsComboBox, "Pick the correct Port to connect to.");
+            MainToolTip.SetToolTip(PortsComboBox, "Pick the correct Port to connect to.");
             // 
             // ButtonGroupBox
             // 
@@ -218,42 +229,58 @@
             ButtonGroupBox.Location = new Point(356, 310);
             ButtonGroupBox.Name = "ButtonGroupBox";
             ButtonGroupBox.Size = new Size(444, 98);
-            ButtonGroupBox.TabIndex = 1;
+            ButtonGroupBox.TabIndex = 2;
             ButtonGroupBox.TabStop = false;
             ButtonGroupBox.Text = "Controls";
-            ToolTip.SetToolTip(ButtonGroupBox, "Select the controls for the Data logging.");
+            MainToolTip.SetToolTip(ButtonGroupBox, "Select the controls for the Data logging.");
             // 
-            // RadioButtonGroupBox
+            // HistoryComboBox
             // 
-            RadioButtonGroupBox.Controls.Add(MillisecondRadioButton);
-            RadioButtonGroupBox.Controls.Add(MinuteRadioButton);
-            RadioButtonGroupBox.Controls.Add(SecondRadioButton);
-            RadioButtonGroupBox.Location = new Point(12, 310);
-            RadioButtonGroupBox.Name = "RadioButtonGroupBox";
-            RadioButtonGroupBox.Size = new Size(338, 98);
-            RadioButtonGroupBox.TabIndex = 2;
-            RadioButtonGroupBox.TabStop = false;
-            RadioButtonGroupBox.Text = "Sampling Intervals";
-            ToolTip.SetToolTip(RadioButtonGroupBox, "Sample rate intervals for collecting Analog Data.");
+            HistoryComboBox.DropDownStyle = ComboBoxStyle.DropDownList;
+            HistoryComboBox.FormattingEnabled = true;
+            HistoryComboBox.Location = new Point(6, 375);
+            HistoryComboBox.Name = "HistoryComboBox";
+            HistoryComboBox.Size = new Size(170, 33);
+            HistoryComboBox.TabIndex = 3;
+            MainToolTip.SetToolTip(HistoryComboBox, "Choose how much of the data the graph shows.");
+            HistoryComboBox.SelectedIndexChanged += HistoryComboBox_SelectedIndexChanged;
             // 
-            // MillisecondRadioButton
+            // SelectPortLabel
             // 
-            MillisecondRadioButton.AutoSize = true;
-            MillisecondRadioButton.Location = new Point(6, 63);
-            MillisecondRadioButton.Name = "MillisecondRadioButton";
-            MillisecondRadioButton.Size = new Size(161, 29);
-            MillisecondRadioButton.TabIndex = 2;
-            MillisecondRadioButton.TabStop = true;
-            MillisecondRadioButton.Text = "100 Millisecond";
-            ToolTip.SetToolTip(MillisecondRadioButton, "100 Millisecond intervals for collecting.");
-            MillisecondRadioButton.UseVisualStyleBackColor = true;
+            SelectPortLabel.AutoSize = true;
+            SelectPortLabel.Location = new Point(182, 299);
+            SelectPortLabel.Name = "SelectPortLabel";
+            SelectPortLabel.Size = new Size(109, 25);
+            SelectPortLabel.TabIndex = 7;
+            SelectPortLabel.Text = "Select a Port";
+            // 
+            // SampleRateLabel
+            // 
+            SampleRateLabel.AutoSize = true;
+            SampleRateLabel.Location = new Point(182, 343);
+            SampleRateLabel.Name = "SampleRateLabel";
+            SampleRateLabel.Size = new Size(162, 25);
+            SampleRateLabel.TabIndex = 8;
+            SampleRateLabel.Text = "Select Sample Rate";
+            // 
+            // HistorySelectLabel
+            // 
+            HistorySelectLabel.AutoSize = true;
+            HistorySelectLabel.Location = new Point(182, 383);
+            HistorySelectLabel.Name = "HistorySelectLabel";
+            HistorySelectLabel.Size = new Size(151, 25);
+            HistorySelectLabel.TabIndex = 9;
+            HistorySelectLabel.Text = "Select History File";
             // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(10F, 25F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(800, 450);
-            Controls.Add(RadioButtonGroupBox);
+            Controls.Add(HistorySelectLabel);
+            Controls.Add(SampleRateLabel);
+            Controls.Add(SelectPortLabel);
+            Controls.Add(HistoryComboBox);
             Controls.Add(ButtonGroupBox);
             Controls.Add(PortsComboBox);
             Controls.Add(SampleRateComboBox);
@@ -267,10 +294,9 @@
             MainStatusStrip.PerformLayout();
             TopMenuStrip.ResumeLayout(false);
             TopMenuStrip.PerformLayout();
+            GraphContextMenuStrip.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)GraphPictureBox).EndInit();
             ButtonGroupBox.ResumeLayout(false);
-            RadioButtonGroupBox.ResumeLayout(false);
-            RadioButtonGroupBox.PerformLayout();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -286,18 +312,23 @@
         private ToolStripStatusLabel SampleRateStatusLabel;
         private ToolStripStatusLabel ComPortsStatusLabel;
         private MenuStrip TopMenuStrip;
-        private ToolStripMenuItem fileToolStripMenuItem;
+        private ToolStripMenuItem FileMenuItem;
         private System.Windows.Forms.Timer MainTimer;
-        private ContextMenuStrip ContextMenuStrip;
+        private ContextMenuStrip GraphContextMenuStrip;
         private ToolStripMenuItem SettingsMenuItem;
         private PictureBox GraphPictureBox;
         private ComboBox SampleRateComboBox;
-        private RadioButton MinuteRadioButton;
-        private RadioButton SecondRadioButton;
         private ComboBox PortsComboBox;
-        private ToolTip ToolTip;
+        private ToolTip MainToolTip;
         private GroupBox ButtonGroupBox;
-        private GroupBox RadioButtonGroupBox;
-        private RadioButton MillisecondRadioButton;
+        private ComboBox HistoryComboBox;
+        private Label SelectPortLabel;
+        private Label SampleRateLabel;
+        private Label HistorySelectLabel;
+        private ToolStripMenuItem ExitMenuItem;
+        private ToolStripMenuItem StartContextMenuItem;
+        private ToolStripMenuItem StopContextMenuItem;
+        private ToolStripMenuItem SaveContextMenuItem;
     }
 }
+
