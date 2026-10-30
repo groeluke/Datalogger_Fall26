@@ -11,18 +11,28 @@ namespace Datalogger_Fall26
     public partial class Form1 : Form
     {
         // fields
-        SerialPort serialPort = new SerialPort();  //the serial port we talk to the PIC on
-        List<byte> rxBuffer = new List<byte>();  //temporary storage for bytes coming from the PIC
-        bool picFound = false;  //true once we successfully found the PIC
-        string verifiedPort = "";  //which COM port the PIC is on
-        bool waiting = false;  //true while we are waiting for a reply from the PIC
-        DateTime replyDeadline;  //when we should give up waiting for a reply
-        DateTime nextSearchTime = DateTime.Now;  //when we should try looking for the PIC again
-
+        SerialPort serialPort = new SerialPort();  
+        //the serial port we talk to the PIC on
+        List<byte> rxBuffer = new List<byte>();  
+        //temporary storage for bytes coming from the PIC
+        bool picFound = false;  
+        //true once we successfully found the PIC
+        string verifiedPort = "";  
+        //which COM port the PIC is on
+        bool waiting = false;  
+        //true while we are waiting for a reply from the PIC
+        DateTime replyDeadline;  
+        //when we should give up waiting for a reply
+        DateTime nextSearchTime = DateTime.Now;  
+        //when we should try looking for the PIC again
         List<(int adc, DateTime time)> samples = new List<(int, DateTime)>();
-        bool isSampling = false;
-        string currentLogPath = "";
-        const int MAX_SAMPLES = 2000;
+        //all the ADC readings we have collected
+        bool isSampling = false;  
+        //true while we are actively taking samples
+        string currentLogPath = "";  
+        //full path of the last file we saved
+        const int MAX_SAMPLES = 2000; 
+        //stop the list from growing forever
 
         public Form1()
         {
@@ -187,24 +197,25 @@ namespace Datalogger_Fall26
 
         void MainTimer_Tick(object sender, EventArgs e)
         {
+            //still looking for the PIC
             if (!picFound)
             {
                 if (DateTime.Now >= nextSearchTime)
                     FindPic();
                 return;
             }
-
+            //make sure the COM port is still there
             if (!PortStillExists())
             {
                 DisconnectPic("COM port gone");
                 return;
             }
-
+            //pull in any bytes the PIC has sent
             ReadIncomingBytes();
-
+            //if we are sampling and not already waiting for a reply, ask for a new ADC value
             if (isSampling && !waiting)
                 SendAdcRequest();
-
+            //if the PIC took too long to answer, :(
             if (waiting && DateTime.Now > replyDeadline)
                 DisconnectPic("PIC timeout");
         }
@@ -270,7 +281,7 @@ namespace Datalogger_Fall26
                 // show what we received (helpful for debugging)
                 AddEvent(portName + " RX: " + BitConverter.ToString(buf));
 
-                // look for the ID reply anywhere in the data
+                // look for the ID reply anywhere in the data: 24 49 02 33 75
                 for (int i = 0; i <= buf.Length - 5; i++)
                 {
                     if (buf[i] == 0x24 &&
@@ -310,6 +321,7 @@ namespace Datalogger_Fall26
             }
         }
 
+        //Read all the bytes that have come from the PIC and turns them into packets
         void ReadIncomingBytes()
         {
             if (serialPort == null || !serialPort.IsOpen) return;
@@ -336,10 +348,12 @@ namespace Datalogger_Fall26
             }
         }
 
+        //Pulls one complete packet out of the receive buffer
         bool GetOnePacket(out byte[] packet)
         {
             packet = null;
 
+            //throw awa junk until we see the start byte
             while (rxBuffer.Count > 0 && rxBuffer[0] != 0x24)
                 rxBuffer.RemoveAt(0);
 
@@ -353,10 +367,12 @@ namespace Datalogger_Fall26
             return true;
         }
 
+        //Looks at a finished packet and decides what to do with it
         void HandlePacket(byte[] packet)
         {
             AddEvent("RX " + BitConverter.ToString(packet));
 
+            //ADC reply looks like: 24 41 03 00 HH LL
             if (packet.Length == 6 && packet[1] == 0x41)
             {
                 int adc = ((packet[4] & 0x03) << 8) | packet[5];
@@ -364,6 +380,7 @@ namespace Datalogger_Fall26
             }
         }
 
+        //Stores one ADC reading and updates the list box + graph
         void StoreSample(int adc)
         {
             if (!isSampling) return;
@@ -375,9 +392,10 @@ namespace Datalogger_Fall26
             ComListBox.Items.Add(DateTime.Now.ToString("HH:mm:ss.fff") + "  ADC = " + adc);
             ComListBox.TopIndex = ComListBox.Items.Count - 1;
 
-            GraphPictureBox.Invalidate();
+            GraphPictureBox.Invalidate();  //force the graph to redraw
         }
 
+        //Cleans up when we lose the PIC
         void DisconnectPic(string reason)
         {
             picFound = false;
@@ -390,6 +408,7 @@ namespace Datalogger_Fall26
             UpdateStatusBar();
         }
 
+        //Closes the serical port id it is open
         void ClosePort()
         {
             try
@@ -400,12 +419,14 @@ namespace Datalogger_Fall26
             catch { }
         }
 
+        //Returns true if the COM port we were using is still present
         bool PortStillExists()
         {
             return SerialPort.GetPortNames()
-                .Any(p => string.Equals(p, verifiedPort, StringComparison.OrdinalIgnoreCase));
+            .Any(p => string.Equals(p, verifiedPort, StringComparison.OrdinalIgnoreCase));
         }
 
+        //Draws the grap of the collected samples
         void GraphPictureBox_Paint(object sender, PaintEventArgs e)
         {
             Graphics g = e.Graphics;
@@ -414,14 +435,14 @@ namespace Datalogger_Fall26
             if (samples.Count < 2) return;
 
             List<(int adc, DateTime time)> points;
-            if (HistoryComboBox.SelectedIndex == 1)
+            if (HistoryComboBox.SelectedIndex == 1)  //see the last 30 seconds of the graph
             {
                 DateTime cutoff = DateTime.Now.AddSeconds(-30);
                 points = samples.Where(s => s.time >= cutoff).ToList();
             }
             else
-            {
-                points = samples;
+            { 
+                points = samples;  //see fill history of the graph
             }
 
             if (points.Count < 2) return;
