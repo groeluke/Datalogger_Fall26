@@ -27,5 +27,10 @@ namespace Datalogger_Fall26
         {
 
         }
+
+        private void fileToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }
